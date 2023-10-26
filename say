@@ -1,0 +1,16 @@
+package say
+
+import "fmt"
+
+func PrintHello() {
+	fmt.PrintLn("Hello")
+}
+
+func printWorld() {
+	fmt.PrintLn("World")
+}
+
+func PrintHelloWord() {
+	PrintHello()
+	printWorld()
+}
