@@ -3,19 +3,23 @@ package main
 //https://github.com/gophercises/quiz
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"log"
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 )
 
+// Uneccessary but still used struct for formatting questions
 type questionFormat struct {
 	NumOne int
 	NumTwo int
 }
 
+// 'method' to add NumOne & NumTwo
 func (qF questionFormat) EvaluateAddition() int {
 	return qF.NumOne + qF.NumTwo
 }
@@ -29,7 +33,7 @@ func makeRangeOfRandomQuestionFormat(min, max int) []questionFormat {
 }
 
 func makeQuiz(questionsMin, questionsMax int) {
-	randomQuestionsRange := makeRangeOfRandomQuestionFormat(1, 100)
+	randomQuestionsRange := makeRangeOfRandomQuestionFormat(questionsMin, questionsMax)
 	filePath := "problems.csv"
 
 	csvFile, err := os.Create(filePath)
@@ -73,22 +77,32 @@ func getQuiz(filePath string) [][]string {
 }
 
 func takeQuiz(qs [][]string) {
-	//reader := bufio.NewReader(os.Stdin)
+	reader := bufio.NewReader(os.Stdin)
 	correctCount := 0
-	for _, val := range qs {
+	for index, val := range qs {
+		if index == 0 {
+			continue
+		}
 		fmt.Print("what is: ", val[0], "= ")
-		var input int
-		fmt.Scan(&input) //reader.ReadString('\n')
-		if input == val[1] {
+		input, _ := reader.ReadString('\n')
+		SplitInput := strings.Trim(input, "\r\n")
+		atoiInput, err := strconv.Atoi(SplitInput)
+		if err != nil {
+			fmt.Println(fmt.Errorf("failed to convert input to integer: %s", err))
+			continue
+		}
+		answer, err := strconv.Atoi(val[1])
+		if atoiInput == answer {
 			fmt.Println("correct")
 			correctCount++
 		} else {
 			fmt.Println("incorrect")
 		}
 	}
+	fmt.Printf("%d/%d correct\n", correctCount, len(qs)-1)
 }
 
 func main() {
-	makeQuiz(1, 100)
+	makeQuiz(1, 25)
 	takeQuiz(getQuiz("problems.csv"))
 }
