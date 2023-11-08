@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"errors"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -11,8 +12,24 @@ import (
 )
 
 type Record struct {
-	Name string
-	ID   int
+	Name        string
+	ID          int
+	PhoneNumber string
+}
+
+func (r *Record) newPhoneNumber() {
+	var newPhoneNumber string
+	for i := 0; i < 12; i++ {
+		if i == 0 {
+			newPhoneNumber += fmt.Sprint(rand.Intn(8) + 1)
+		} else if i == 3 || i == 7 {
+			newPhoneNumber += "-"
+			continue
+		} else {
+			newPhoneNumber += fmt.Sprint(rand.Intn(9))
+		}
+	}
+	r.PhoneNumber = newPhoneNumber
 }
 
 func makeRecords(maxRecords int) ([]Record, error) {
@@ -40,6 +57,7 @@ func makeRecords(maxRecords int) ([]Record, error) {
 	for i := range recordsSlice {
 		randomName := lastNames[rand.Intn(len(lastNames)-1)] + ", " + firstNames[rand.Intn(len(firstNames)-1)]
 		recordsSlice[i] = Record{Name: randomName, ID: i}
+		recordsSlice[i].newPhoneNumber()
 	}
 
 	sort.Slice(
@@ -64,9 +82,9 @@ func writeRecords(records []Record, filePath string) error {
 
 	var dataToWrite [][]string
 
-	dataToWrite = append(dataToWrite, []string{"user", "id"})
+	dataToWrite = append(dataToWrite, []string{"user", "id", "phone_number"})
 	for _, rec := range records {
-		row := []string{rec.Name, strconv.Itoa(rec.ID)}
+		row := []string{rec.Name, strconv.Itoa(rec.ID), rec.PhoneNumber}
 		dataToWrite = append(dataToWrite, row)
 	}
 
@@ -79,6 +97,7 @@ func writeRecords(records []Record, filePath string) error {
 }
 
 func main() {
+
 	if len(os.Args) < 3 || os.Args[1] == "-h" {
 		log.Fatalf("argument position 1 is recordCount position 2 is outputfilepath, ex: <executable>.exe 100 './output.csv'")
 	} else {
@@ -96,4 +115,5 @@ func main() {
 			log.Fatalf("failed to sort records")
 		}
 	}
+
 }
