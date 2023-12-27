@@ -47,3 +47,24 @@ func guessNumber(n int) int {
 
 	return left
 }
+
+//https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/
+func nextGreatestLetter(letters []byte, target byte) byte {
+	for target <= byte('z') {
+		target = target + 1
+		left := 0
+		right := len(letters) - 1
+		var middle int
+		for left <= right {
+			middle = (left + right) / 2
+			if letters[middle] == target {
+				return letters[middle]
+			} else if letters[middle] > target {
+				right = middle - 1
+			} else {
+				left = middle + 1
+			}
+		}
+	}
+	return letters[0]
+}
