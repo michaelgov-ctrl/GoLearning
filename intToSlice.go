@@ -1,11 +1,10 @@
 func intToSlice(num int) []int {
-   base, n := 0, num
-   for n > 0 {
-      n = n/10
-      base++
-   }
-    arr := make([]int, base)
-    base = 0
+    base, n := 0, num
+    for n > 0 {
+        n = n/10
+        base++
+    }
+    base, arr := 0, make([]int, base)
     for num > 0 {
         arr[len(arr)-(base+1)] = num%10
         num = int(num / 10)
