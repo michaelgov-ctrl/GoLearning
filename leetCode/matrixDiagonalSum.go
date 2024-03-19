@@ -6,7 +6,7 @@ func diagonalSum(mat [][]int) int {
     }
 
     var sum int
-    for i, j, x, y := 0, 0, 0, len(mat)-1; i < len(mat[0]) && y < len(mat); i, j, x, y = i+1, j+1, x+1, y-1 {
+    for i, j, x, y := 0, 0, 0, len(mat)-1; i < len(mat[0]) && 0 <= y; i, j, x, y = i+1, j+1, x+1, y-1 {
         sum+=mat[i][j]
         sum+=mat[x][y]
     }
