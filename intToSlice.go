@@ -35,3 +35,24 @@ func sumDigits(n int) int {
 
     return sum
 }
+
+// https://leetcode.com/problems/find-the-sum-of-encrypted-integers/description/
+func intOfMaxDigit(num int) int {
+    var l, max int
+    for num > 0 {
+        if num%10 > max {
+            max = num%10
+        }
+
+        num = num/10
+        l++
+    }
+    
+    var res, base = 0, 1
+    for i := 0; i < l; i++ {
+        res+=max*base
+        base*=10
+    }
+
+    return res
+}
