@@ -20,3 +20,15 @@ func asBase3(n int) int {
     }
     return res
 }
+
+// https://leetcode.com/problems/check-if-number-is-a-sum-of-powers-of-three/solutions/4626516/go-minimalist-solution-for-any-base-2/
+const base = 3
+
+func checkPowersOfThree(n int) bool {
+    for ; n > 0; n /= base {
+        if n % base > 1 {
+            return false
+        }
+    }
+    return true
+}
