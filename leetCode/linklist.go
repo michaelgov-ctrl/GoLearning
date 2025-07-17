@@ -83,3 +83,36 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
     return head.Next
 }
+
+
+
+// https://leetcode.com/problems/intersection-of-two-linked-lists/description/
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+    visited := make(map[*ListNode]bool)
+	for a, b := headA, headB; a != nil || b != nil; {
+		if a != nil {
+			if visited[a] {
+				return a
+			}
+			visited[a] = true
+			a = a.Next
+		}
+
+		if b != nil {
+			if visited[b] {
+				return b
+			}
+			visited[b] = true
+			b = b.Next
+		}
+	}
+    return nil
+}
