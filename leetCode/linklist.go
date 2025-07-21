@@ -116,3 +116,49 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
     return nil
 }
+
+
+// https://leetcode.com/problems/merge-nodes-in-between-zeros/
+
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeNodes(head *ListNode) *ListNode {
+    res, curr, sum := &ListNode{}, head.Next, 0
+    tail := res
+    for curr != nil {
+        if curr.Val == 0 {
+            tail.Next = &ListNode{Val: sum}
+            tail = tail.Next
+            sum = 0
+        } else {
+            sum += curr.Val
+        }
+
+        curr = curr.Next
+    }
+
+    return res.Next
+}
+
+
+// NOTE:
+// [] -> []
+/*
+head = &ListNode{
+	Val: x,
+ 	Next: head,
+}
+*/
+
+// [] <- []
+/*
+tail.Next = &ListNode{Val: x}
+tail = tail.Next
+*/
+
+
