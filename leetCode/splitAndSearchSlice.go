@@ -33,3 +33,26 @@ func searchRightOnes(arr []rune) int {
 
     return res
 }
+
+// https://leetcode.com/problems/queries-on-a-permutation-with-key/
+// multi append around deletion
+func processQueries(queries []int, m int) []int {
+    p, res := generateP(m), make([]int, len(queries))
+    for i := 0; i < len(res); i++ {
+        idx := slices.Index(p, queries[i])
+        res[i] = idx
+        if idx < len(p) {
+            temp := append(p[:idx], p[idx+1:]...)
+            p = append([]int{queries[i]}, temp...)
+        }
+    }
+    return res
+}
+
+func generateP(m int) (p []int) {
+    p = make([]int, m)
+    for i := 0; i < len(p); i++ {
+        p[i] = i+1
+    }
+    return
+}
