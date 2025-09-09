@@ -11,3 +11,15 @@ func convertToTitle(columnNumber int) string {
 
     return string(res)
 }
+
+// inverse
+// https://leetcode.com/problems/excel-sheet-column-number/description/
+
+func titleToNumber(columnTitle string) int {
+    var res int
+    for _, r := range columnTitle {
+        res *= 26
+        res += int(r - 'A' + 1)
+    }
+    return res
+}
