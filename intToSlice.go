@@ -56,3 +56,17 @@ func intOfMaxDigit(num int) int {
 
     return res
 }
+
+// https://leetcode.com/problems/compute-decimal-representation/description/
+// extract digits with place value
+func decimalRepresentation(n int) []int {
+    var res []int
+    for i := 1; n > 0; i, n = i*10, n/10 {
+        t := (n%10)*i
+        if t == 0 {
+            continue
+        }
+        res = append([]int{t}, res...)
+    }
+    return res
+}
