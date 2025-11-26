@@ -56,3 +56,31 @@ func generateP(m int) (p []int) {
     }
     return
 }
+
+// https://leetcode.com/problems/repeated-substring-pattern/description/?envType=problem-list-v2&envId=string
+// 'windowing' blocks over a slice
+
+func repeatedSubstringPattern(s string) bool {
+    factors := divBy(s)
+OUTER:
+    for _, f := range factors {
+        sub := string(s[0:f])
+        for i := f; i < len(s); i+=f {
+            if sub != string(s[i:i+f]) {
+                continue OUTER
+            }
+        }
+        return true
+    }
+    return false
+}
+
+func divBy(s string) []int {
+    var res []int
+    for i := len(s)/2; i > 0; i-- {
+        if len(s)%i == 0 {
+            res = append(res, i)
+        }
+    }
+    return res
+}
