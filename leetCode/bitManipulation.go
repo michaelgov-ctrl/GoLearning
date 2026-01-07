@@ -31,3 +31,16 @@ func kBitsSet(n, k int) bool {
     }
     return setBits == k
 }
+
+// https://leetcode.com/problems/number-complement/description/
+// Invert bits and trim significant digits for accurate representation with mask
+// The binary representation of 5 is 101 (no leading zero bits), and its complement is 010 so 2.
+func findComplement(num int) int {
+    numBits := bits.Len(uint(num))
+    if numBits == 0 {
+		return 0
+	}
+
+    mask := (1 << numBits) - 1
+    return num ^ mask
+}
