@@ -104,3 +104,44 @@ func generateKPermutations(nums []int, k int) [][]int {
 
     return results
 }
+
+// PowerShell
+function Get-KPermutations {
+    param(
+        [char[]]$Chars,
+        [int]$K,
+        [string]$Prefix,
+        [string]$Suffix
+    )
+
+    $used = New-Object bool[] $Chars.Length
+    $current = [System.Collections.Generic.List[char]]::new()
+
+    function dfs {
+        if ($current.Count -eq $K) {
+            "$Prefix$($current.ToArray() -join '')$Suffix"
+            return
+        }
+
+        foreach ($i in 0..($Chars.Length-1)) {
+            if (-not $used[$i]) {
+                $used[$i] = $true
+                $current.Add($Chars[$i])
+
+                dfs
+
+                $current.RemoveAt($current.Count - 1)
+                $used[$i] = $false
+            }
+        }
+    }
+
+    dfs
+}
+
+$k = 42
+$chars = [byte][char]'!'..[byte][char]'z' | % {
+    [char]$_
+}
+
+Get-KPermutations -Chars $chars -K $k
