@@ -162,3 +162,41 @@ tail = tail.Next
 */
 
 
+// https://leetcode.com/problems/search-in-a-binary-search-tree/description/
+// this could be improved with searching whether the current value is greater or less than 'val' since left is less and right is greater.
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func searchBST(root *TreeNode, val int) *TreeNode {
+    return dfs(root, val)
+}
+
+func dfs(root *TreeNode, val int) *TreeNode {
+    if root == nil {
+        return nil
+    }
+
+    if root.Val == val {
+        return root
+    }
+
+    left := dfs(root.Left, val)
+    if left != nil {
+        return left
+    }
+
+    right := dfs(root.Right, val)
+    if right != nil {
+        return right
+    }
+
+    return nil
+}
+
+
+
