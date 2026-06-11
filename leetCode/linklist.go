@@ -200,3 +200,43 @@ func dfs(root *TreeNode, val int) *TreeNode {
 
 
 
+// https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
+// this could be optimized to carry just the count & sum for each level
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func averageOfLevels(root *TreeNode) []float64 {
+    levels := [][]int{}
+    flatten(root, 0, &levels)
+    
+    res := make([]float64, len(levels))
+    for i, l := range levels {
+        sum := 0
+        for _, n := range l {
+            sum += n
+        }
+        res[i] = float64(sum) / float64(len(l))
+    }
+
+    return res
+}
+
+func flatten(root *TreeNode, level int, res *[][]int) {
+    if root == nil {
+        return
+    }
+
+    if (len(*res) <= level) {
+        *res = append(*res, []int{})
+    }
+
+    (*res)[level] = append((*res)[level], root.Val)
+
+    flatten(root.Left, level + 1, res)
+    flatten(root.Right, level + 1, res)
+} 
