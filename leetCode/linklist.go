@@ -240,3 +240,35 @@ func flatten(root *TreeNode, level int, res *[][]int) {
     flatten(root.Left, level + 1, res)
     flatten(root.Right, level + 1, res)
 } 
+
+
+
+// https://leetcode.com/problems/binary-tree-inorder-traversal/description/
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func inorderTraversal(root *TreeNode) []int {
+    var res []int
+    inOrder(root, &res)
+    return res
+}
+
+func inOrder(node *TreeNode, res *[]int) {
+    if node == nil {
+        return
+    }
+
+    // in order - leftmost first
+    inOrder(node.Left, res)
+
+    *res = append(*res, node.Val)
+
+    // go right on the way back up the call
+    inOrder(node.Right, res)
+}
