@@ -272,3 +272,98 @@ func inOrder(node *TreeNode, res *[]int) {
     // go right on the way back up the call
     inOrder(node.Right, res)
 }
+
+
+
+
+// https://leetcode.com/problems/same-tree/description/
+
+// 1. my solution
+
+type optional struct {
+    v int
+    exists bool
+}
+
+func newOptional(v *int, exists bool) optional {
+    tv := 0
+    if v != nil {
+        tv = *v
+    }
+
+    return optional{
+        v: tv,
+        exists: exists,
+    }
+}
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+    pch, qch := make(chan optional), make(chan optional)
+
+    go Walk(p, pch)
+    go Walk(q, qch)
+
+    for {
+        pv, pok := <-pch
+        qv, qok := <-qch
+
+        if pok != qok || pv.exists != qv.exists || pv.v != qv.v {
+            return false
+        }
+
+        fmt.Println(pv, qv)
+        if !pok {
+            break
+        }
+    }
+
+    return true
+}
+
+func Walk(t *TreeNode, ch chan optional) {
+    defer close(ch)
+
+    var walk func(t *TreeNode)
+    walk = func(t *TreeNode) {
+        if t == nil {
+            ch <- newOptional(nil, false)
+            return
+        }
+
+        ch <- newOptional(&t.Val, true)
+
+        walk(t.Left)
+        walk(t.Right)
+    }
+    walk(t)
+}
+
+// 2. simpler solution...
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+    if p == nil && q == nil {
+        return true
+    }
+
+    if (p == nil || q == nil) || p.Val != q.Val {
+        return false
+    }
+
+    return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+}
