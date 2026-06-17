@@ -10,3 +10,20 @@ func isSubsequence(s string, t string) bool {
     
     return i == len(s)
 }
+
+// https://leetcode.com/problems/long-pressed-name/description/
+func isLongPressedName(name string, typed string) bool {
+    var i, j int
+    for j < len(typed) {
+        if i < len(name) && typed[j] == name[i] {
+            i++
+            j++
+        } else if j > 0 && typed[j-1] == typed[j] {
+            j++
+        } else {
+            return false
+        }
+    }
+    
+    return i == len(name)
+}
