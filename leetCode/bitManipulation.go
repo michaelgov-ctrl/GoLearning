@@ -57,3 +57,13 @@ func hammingWeight(n int) int {
     }
     return res
 }
+
+// more simple version of above is to move "downwards"
+func hammingWeight(n int) int {
+    var res int
+    for n != 0 {
+        res += n & 1
+        n >>= 1
+    }
+    return res
+}
