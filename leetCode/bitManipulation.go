@@ -44,3 +44,16 @@ func findComplement(num int) int {
     mask := (1 << numBits) - 1
     return num ^ mask
 }
+
+// https://leetcode.com/problems/number-of-1-bits/description/
+// count set bits of an int
+func hammingWeight(n int) int {
+    var res int
+    for i := 0; i < strconv.IntSize; i++ {
+        if n & 1 == 1 {
+            res++
+        }
+        n >>= 1
+    }
+    return res
+}
