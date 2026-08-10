@@ -73,3 +73,51 @@ func frequencySort(nums []int) []int {
     })
     return nums
 }
+
+
+
+// https://leetcode.com/problems/minimum-deletions-for-at-most-k-distinct-characters/description/
+type charCount struct {
+    char rune
+    count int
+}
+
+func newCharCount(char rune, count int) charCount {
+    return charCount{
+        char: char,
+        count: count,
+    }
+}
+
+func mapToCharCountSlice(m map[rune]int) []charCount {
+    res, i := make([]charCount, len(m)), 0
+    for k, v := range m {
+        res[i] = newCharCount(k, v)
+        i++
+    }
+
+    return res
+}
+
+func stringToCharCountSlice(s string) []charCount {
+    m := make(map[rune]int)
+    for _, r := range s {
+        m[r]++
+    }
+
+    return mapToCharCountSlice(m)
+}
+
+func minDeletion(s string, k int) int {
+    charCounts := stringToCharCountSlice(s)
+    slices.SortFunc(charCounts, func(a, b charCount) int {
+        return cmp.Compare(a.count, b.count)
+    })
+
+    res := 0
+    for i := 0; i < len(charCounts)-k; i++ {
+        res += charCounts[i].count
+    }
+    
+    return res
+}
