@@ -55,3 +55,25 @@ func (this *UndergroundSystem) GetAverageTime(startStation string, endStation st
  * obj.CheckOut(id,stationName,t);
  * param_3 := obj.GetAverageTime(startStation,endStation);
  */
+
+
+// https://leetcode.com/problems/rings-and-rods/description/
+func countPoints(rings string) int {
+    runes, rods := []rune(rings), make(map[rune]map[rune]struct{})
+    for i := 0; i < len(rings); i += 2 {
+        if rods[runes[i+1]] == nil {
+            rods[runes[i+1]] = make(map[rune]struct{})
+        }
+
+        rods[runes[i+1]][runes[i]] = struct{}{}
+    }
+    
+    var res int
+    for _, v := range rods {
+        if len(v) == 3 {
+            res++
+        }
+    }
+
+    return res
+}
