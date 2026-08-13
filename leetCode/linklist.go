@@ -367,3 +367,37 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 
     return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
 }
+
+
+
+// https://leetcode.com/problems/sum-of-left-leaves/description/
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func sumOfLeftLeaves(root *TreeNode) int {
+    var (
+        res int
+        dfs func(node *TreeNode)
+    )
+
+    dfs = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+
+        if node.Left != nil && node.Left.Left == nil && node.Left.Right == nil {
+            res += node.Left.Val
+        }
+
+        dfs(node.Left)
+        dfs(node.Right)
+    }
+
+    dfs(root)
+    return res
+}
