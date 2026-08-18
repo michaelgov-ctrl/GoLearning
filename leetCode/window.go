@@ -71,3 +71,61 @@ func lengthOfLongestSubstring(s string) int {
 
     return res
 }
+
+
+// https://leetcode.com/problems/find-the-largest-almost-missing-integer/description
+func largestInteger(nums []int, k int) int {
+    totalFreq := make(map[int]int)
+    for i := 0; i <= len(nums)-k; i++ {
+        tempFreq := make(map[int]struct{})
+        for _, n := range nums[i:k+i] {
+            tempFreq[n] = struct{}{}
+        }
+
+        for k := range tempFreq {
+            totalFreq[k]++
+        }
+    }
+
+    var candidates []int
+    for k, v := range totalFreq {
+        if v == 1 {
+            candidates = append(candidates, k)
+        }
+    }
+
+    if len(candidates) == 0 {
+        return -1
+    }
+
+    return slices.Max(candidates)
+}
+
+// or
+
+func largestInteger(nums []int, k int) int {
+    if k > len(nums) {
+		return -1
+	}
+
+    m := make(map[int]int)
+	for i := 0; i <= len(nums)-k; i++ {
+		window, temp := nums[i:i+k], make(map[int]bool)        
+        for _, n := range window {
+            temp[n] = true
+        }
+
+        for k := range temp {
+            m[k]++
+        }
+    }
+
+    res := -1
+    for k, v := range m {
+        if v == 1 && k > res {
+            res = k
+        }
+    }
+
+    return res
+}
