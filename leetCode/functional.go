@@ -29,3 +29,22 @@ func slidingWindowFunc(r []rune, k int, f func([]rune) bool) bool {
     }
     return false
 }
+
+// much simpler solution than above
+func lengthOfLongestSubstring(s string) int {
+    res, tracking := 0, make([]int, 128) // # of diff chars
+    for start, end := 0, 0; end < len(s); end++ {
+        curr := s[end]
+        if tracking[curr] > start {
+            start = tracking[curr]
+        }
+
+        if end-start+1 > res {
+            res = end-start+1
+        }
+
+        tracking[curr] = end+1
+    }
+
+    return res
+}
