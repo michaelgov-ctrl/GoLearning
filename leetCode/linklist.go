@@ -430,3 +430,49 @@ func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
 
     return newRoot
 }
+
+
+// https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxDepth(root *TreeNode) int {
+    var (
+        postOrder func(*TreeNode)
+        res, depth int
+    )
+
+    postOrder = func(r *TreeNode) {
+        if r == nil {
+            res = max(res, depth)
+            return
+        }
+
+        depth++
+        postOrder(r.Left)
+        postOrder(r.Right)
+        depth--
+    }
+
+    postOrder(root)
+
+    return res
+}
+
+// or
+
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+        return 0
+    }
+
+	right := maxDepth(root.Right)
+    left := maxDepth(root.Left)
+
+    return 1 + max(right, left)
+}
