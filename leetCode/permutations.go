@@ -145,3 +145,44 @@ $chars = [byte][char]'!'..[byte][char]'z' | % {
 }
 
 Get-KPermutations -Chars $chars -K $k
+
+
+
+
+// https://leetcode.com/problems/letter-tile-possibilities/description/
+func numTilePossibilities(tiles string) int {
+    return len(permute([]rune(tiles)))
+}
+
+func permute(tiles []rune) map[string]struct{} {
+    uniqPermutations := make(map[string]struct{})
+    curr, used := make([]rune, 0), make([]bool, len(tiles))
+
+    var backtrack func(targetLength int)
+    backtrack = func(targetLength int) {
+        if len(curr) == targetLength {
+            uniqPermutations[string(curr)] = struct{}{}
+            return
+        }
+
+        for i := 0; i < len(tiles); i++ {
+            if used[i] {
+                continue
+            }
+            used[i] = true
+            curr = append(curr, tiles[i])
+
+            backtrack(targetLength)
+
+            curr = curr[:len(curr)-1]
+            used[i] = false
+        }
+    }
+
+    // all lengths based on problem requirements
+    for i := 1; i <= len(tiles); i++ {
+        backtrack(i)
+    }
+
+    return uniqPermutations
+}
