@@ -476,3 +476,21 @@ func maxDepth(root *TreeNode) int {
 
     return 1 + max(right, left)
 }
+
+// https://leetcode.com/problems/convert-doubly-linked-list-to-array-i/description/
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Prev *Node
+ * }
+ */
+func toArray(head *Node) []int {
+    var res []int
+    for head != nil {
+        res = append(res, head.Val)
+        head = head.Next
+    }
+    return res
+}
