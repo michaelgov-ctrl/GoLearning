@@ -19,3 +19,34 @@ func evaluateTree(root *TreeNode) bool {
         return true
     }
 }
+
+
+
+// https://leetcode.com/problems/binary-tree-preorder-traversal/description/
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func preorderTraversal(root *TreeNode) []int {
+    var res []int
+    
+    var preorder func(node *TreeNode)
+    preorder = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+
+        res = append(res, node.Val)
+        preorder(node.Left)
+        preorder(node.Right)
+    }
+
+    preorder(root)
+
+    return res
+}
