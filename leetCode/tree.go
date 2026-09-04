@@ -84,3 +84,35 @@ func postorderTraversal(root *TreeNode) []int {
     return res
 }
 
+
+
+// https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Children []*Node
+ * }
+ */
+
+func postorder(root *Node) []int {
+    var res []int
+    var postOrder func(node *Node)
+    postOrder = func(node *Node) {
+        if node == nil {
+            return
+        }
+        
+        for _, n := range node.Children {
+            postOrder(n)
+        }
+
+        res = append(res, node.Val)
+    }
+
+    postOrder(root)
+    
+    return res
+}
+
+
